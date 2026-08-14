@@ -1,10 +1,10 @@
 body{
-    background-color: azure;
+    background-color: rgb(39, 37, 37);
 }
 
 header{
-    border: 2px solid black;
-    border-radius: 20px;
+    border: 2px solid rgb(190, 93, 1);
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -14,21 +14,101 @@ header{
 }
 
 header a{
-    color: black;
+    color: rgb(245, 228, 228);
     text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+header a:hover{
+    color:  rgb(190, 93, 1);
+    transform: translateY(-5px);
 }
 
 .btn-home img {
-    filter: brightness(0);
+    filter: rgb(245, 228, 228);
+    transition: transform 0.3s ease;
+}
+
+.btn-home img:hover {
+    transform: scale(1.2);
+   filter: invert(65%) sepia(70%) saturate(1400%) hue-rotate(345deg) brightness(125%) contrast(101%);
+}
+
+.btn-cart img {
+    filter: rgb(245, 228, 228);
+    transition: transform 0.3s ease;
+}
+
+.btn-cart img:hover {
+    transform: scale(1.2);
+   filter: invert(65%) sepia(70%) saturate(1400%) hue-rotate(345deg) brightness(125%) contrast(101%);
 }
 
 .pesquisa{
-     filter: brightness(0);
-    border: 2px solid black;
+    
+    border: 2px solid  rgb(190, 93, 1);
     border-radius: 40px;
     padding: 10px 20px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     margin-top: 30px;
+    transition: all 0.3s ease;
+    width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pesquisa:hover{
+    border-color: rgb(245, 228, 228);
+    transform:scale(1.05);
+}
+
+.destaques{
+    border: 2px solid  rgb(190, 93, 1);
+    border-radius: 20px;
+    padding: 30px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 30px;
+    transition: all 0.3s ease;
+    width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(190, 93, 1);
+    border-radius: 40px; ;
+}
+
+.destaque1{
+   border: 2px solid  rgb(190, 93, 1);
+    border-radius: 20px;
+    padding: 300px 20px;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 30px;
+    transition: all 0.3s ease;
+    width: 600px;
+    height: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(245, 228, 228);
+    border-radius: 40px; ;
+}
+
+.destaque2{
+   border: 2px solid  rgb(190, 93, 1);
+    border-radius: 20px;
+    padding: 300px 20px;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 30px;
+    transition: all 0.3s ease;
+    width: 600px;
+    height: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(245, 228, 228);
+    border-radius: 40px; ;
 }
