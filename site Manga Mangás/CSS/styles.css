@@ -10,6 +10,7 @@ header{
     justify-content: flex-start;
     gap: 350px;
     padding: 10px 40px;
+    background-color:  rgb(65, 61, 61);
 
 }
 
@@ -45,7 +46,7 @@ header a:hover{
    filter: invert(65%) sepia(70%) saturate(1400%) hue-rotate(345deg) brightness(125%) contrast(101%);
 }
 
-.pesquisa{
+.pesquisa input{
     
     border: 2px solid  rgb(190, 93, 1);
     border-radius: 40px;
@@ -58,11 +59,17 @@ header a:hover{
     width: 1500px;
     margin-left: auto;
     margin-right: auto;
+    color: black;
+    font-size: 16px;
 }
 
 .pesquisa:hover{
     border-color: rgb(245, 228, 228);
     transform:scale(1.05);
+}
+
+.pesquisa input::placeholder {
+    color: black;
 }
 
 .destaques{
@@ -112,4 +119,3 @@ header a:hover{
     background-color: rgb(245, 228, 228);
     border-radius: 40px; ;
 }
-

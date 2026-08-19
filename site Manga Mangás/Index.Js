@@ -1,13 +1,4 @@
-// BUSCAR
-function buscar() {
-    const termo = document.getElementById('busca').value.toLowerCase();
-    const lista = document.getElementById('listaMangas');
-    lista.innerHTML = '';
-    
-    const resultados = mangas.filter(m => 
-        m.nome.toLowerCase().includes(termo) || 
-        m.autor.toLowerCase().includes(termo)
-    ); // LISTA DE MANGÁS
+// LISTA DE MANGÁS
 const mangas = [
     { nome: "One Piece", preco: 29.90, autor: "Eiichiro Oda" },
     { nome: "Naruto", preco: 24.90, autor: "Masashi Kishimoto" },
@@ -17,63 +8,80 @@ const mangas = [
 
 let carrinho = 0;
 
-// MOSTRAR MANGÁS
-function mostrarMangas() {
+// MOSTRAR TODOS OS MANGÁS
+function mostrarMangas(listaParaExibir = mangas) {
     const lista = document.getElementById('listaMangas');
-    lista.innerHTML = '';
+    if (!lista) return; // Evita erro se o elemento não existir na página atual
     
-    mangas.forEach((manga, index) => {
+    lista.innerHTML = '';
+
+    if (listaParaExibir.length === 0) {
+        lista.innerHTML = '<p style="color: #e6b17e;">Nenhum mangá encontrado.</p>';
+        return;
+    }
+
+    listaParaExibir.forEach((manga, index) => {
         lista.innerHTML += `
             <div class="card">
                 <h3>${manga.nome}</h3>
                 <p>${manga.autor}</p>
                 <p><strong>R$ ${manga.preco.toFixed(2)}</strong></p>
-                <button onclick="comprar(${index})">Comprar</button>
+                <button onclick="comprar('${manga.nome}')">Comprar</button>
             </div>
         `;
     });
+}
+
+// BUSCAR MANGÁS
+function pesquisa() {
+    const campoPesquisa = document.getElementById('campoPesquisa');
+    if (!campoPesquisa) return;
+
+    const termo = campoPesquisa.value.toLowerCase();
+    
+    const resultados = mangas.filter(m => 
+        m.nome.toLowerCase().includes(termo) || 
+        m.autor.toLowerCase().includes(termo)
+    );
+
+    mostrarMangas(resultados);
 }
 
 // COMPRAR
-function comprar(index) {
+function comprar(nomeManga) {
     carrinho++;
-    document.getElementById('carrinhoContador').textContent = carrinho;
-    alert(`${mangas[index].nome} adicionado!`);
-
-};
     
-    if (resultados.length === 0) {
-        lista.innerHTML = '<p style="color: #e6b17e;">Nenhum mangá encontrado.</p>';
-        return;
+    const contador = document.getElementById('carrinhoContador');
+    if (contador) {
+        contador.textContent = carrinho;
     }
-    
-    resultados.forEach(m => {
-        lista.innerHTML += `
-            <div class="card">
-                <h3>${m.nome}</h3>
-                <p>${m.autor}</p>
-                <p><strong>R$ ${m.preco.toFixed(2)}</strong></p>
-                <button onclick="alert('${m.nome} adicionado!')">Comprar</button>
-            </div>
-        `;
-    });
+
+    alert(`${nomeManga} adicionado ao carrinho!`);
 }
 
-// VER CARRINHO (quando clicar no ícone)
-document.querySelector('.btn-cart').onclick = function(e) {
-    e.preventDefault();
-    if (carrinho === 0) {
-        alert('Carrinho vazio!');
-    } else {
-        alert(`Você tem ${carrinho} itens no carrinho.`);
+// CONFIGURAR EVENTOS QUANDO A PÁGINA CARREGAR
+document.addEventListener('DOMContentLoaded', () => {
+    // Exibe a lista inicial
+    mostrarMangas();
+
+    // Evento no ícone do carrinho
+    const btnCart = document.querySelector('.btn-cart');
+    if (btnCart) {
+        btnCart.onclick = function(e) {
+            e.preventDefault();
+            if (carrinho === 0) {
+                alert('Carrinho vazio!');
+            } else {
+                alert(`Você tem ${carrinho} item(ns) no carrinho.`);
+            }
+        };
     }
-};
 
-// BUSCAR COM ENTER
-document.getElementById('busca').onkeypress = function(e) {
-    if (e.key === 'Enter') buscar();
-};
-
-// INICIAR
-mostrarMangas();
-
+    // Evento de buscar ao pressionar "Enter"
+    const campoPesquisa = document.getElementById('campoPesquisa');
+    if (campoPesquisa) {
+        campoPesquisa.onkeypress = function(e) {
+            if (e.key === 'Enter') pesquisa();
+        };
+    }
+});
