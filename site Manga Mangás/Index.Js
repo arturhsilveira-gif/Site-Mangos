@@ -1,87 +1,182 @@
-// LISTA DE MANGÁS
-const mangas = [
-    { nome: "One Piece", preco: 29.90, autor: "Eiichiro Oda" },
-    { nome: "Naruto", preco: 24.90, autor: "Masashi Kishimoto" },
-    { nome: "Demon Slayer", preco: 34.90, autor: "Koyoharu Gotouge" },
-    { nome: "Attack on Titan", preco: 32.90, autor: "Hajime Isayama" }
-];
 
-let carrinho = 0;
+const CATALOGO = {
+    'Kaiju N°8': {
+        nome: "Kaiju N°8 Vol: 8",
+        preco: 29.90,
+        autor: "Naoya Matsumoto",
+        img: "IMG/WhatsApp Image 2026-08-21 at 11.29.04.png"
+    },
+    'Dan Da Dan': {
+        nome: "Dan Da Dan Vol: 21",
+        preco: 29.90,
+        autor: "Yukinobu Tatsu",
+        img: "IMG/WhatsApp Image 2026-08-21 at 11.29.02.png"
+    },
+    'Blue Lock': {
+        nome: "Blue Lock Vol: 36",
+        preco: 29.90,
+        autor: "Muneyuki Kaneshiro",
+        img: "IMG/WhatsApp Image 2026-08-21 at 11.29.01.png"
+    },
+    'Wind Breaker': {
+        nome: "Wind Breaker Vol: 23",
+        preco: 29.90,
+        autor: "Satoru Nii",
+        img: "IMG/WhatsApp Image 2026-08-21 at 11.28.54.png"
+    },
+    'Gachiakuta': {
+        nome: "Gachiakuta Vol: 16",
+        preco: 29.90,
+        autor: "Kei Urana",
+        img: "IMG/WhatsApp Image 2026-08-21 at 11.28.53(1).png"
+    },
+    'Diarios de uma apotecária': {
+        nome: "Diarios de uma apotecária Vol: 16",
+        preco: 29.90,
+        autor: "Natsu Hyūga",
+        img: "IMG/WhatsApp Image 2026-08-21 at 11.28.53.png"
+    },
+    'Chainsaw Man': {
+        nome: "Chainsaw Man Vol: 23",
+        preco: 29.90,
+        autor: "Tatsuki Fujimoto",
+        img: "IMG/WhatsApp Image 2026-08-21 at 11.28.52.png"
+    }
+};
 
-// MOSTRAR TODOS OS MANGÁS
-function mostrarMangas(listaParaExibir = mangas) {
-    const lista = document.getElementById('listaMangas');
-    if (!lista) return; // Evita erro se o elemento não existir na página atual
-    
-    lista.innerHTML = '';
 
-    if (listaParaExibir.length === 0) {
-        lista.innerHTML = '<p style="color: #e6b17e;">Nenhum mangá encontrado.</p>';
+function lerCarrinho() {
+    try {
+        const dados = localStorage.getItem('meuCarrinhoManga');
+        return dados ? JSON.parse(dados) : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function salvarCarrinho(carrinho) {
+    localStorage.setItem('meuCarrinhoManga', JSON.stringify(carrinho));
+}
+
+
+function comprar(nomeBuscado) {
+    if (!nomeBuscado) {
+        alert("Erro: O botão não enviou o nome do produto.");
         return;
     }
 
-    listaParaExibir.forEach((manga, index) => {
-        lista.innerHTML += `
-            <div class="card">
-                <h3>${manga.nome}</h3>
-                <p>${manga.autor}</p>
-                <p><strong>R$ ${manga.preco.toFixed(2)}</strong></p>
-                <button onclick="comprar('${manga.nome}')">Comprar</button>
+   
+    const chave = Object.keys(CATALOGO).find(
+        k => k.toLowerCase().trim() === nomeBuscado.toLowerCase().trim()
+    );
+
+    if (!chave) {
+        alert(`Erro: O produto "${nomeBuscado}" não existe no CATALOGO do index.js.`);
+        return;
+    }
+
+    const itemInfo = CATALOGO[chave];
+    let carrinho = lerCarrinho();
+    const index = carrinho.findIndex(item => item.chave === chave);
+
+    if (index !== -1) {
+        carrinho[index].quantidade = (parseInt(carrinho[index].quantidade) || 0) + 1;
+    } else {
+        carrinho.push({
+            chave: chave,
+            nome: itemInfo.nome,
+            preco: itemInfo.preco,
+            autor: itemInfo.autor,
+            img: itemInfo.img,
+            quantidade: 1
+        });
+    }
+
+    salvarCarrinho(carrinho);
+    alert(`${itemInfo.nome} foi adicionado ao carrinho!`);
+}
+
+function removerItem(chave) {
+    let carrinho = lerCarrinho();
+    carrinho = carrinho.filter(item => item.chave !== chave);
+    salvarCarrinho(carrinho);
+    renderizarCarrinho();
+}
+
+function alterarQtd(chave, qtd) {
+    let carrinho = lerCarrinho();
+    const novaQtd = parseInt(qtd);
+
+    if (isNaN(novaQtd) || novaQtd <= 0) {
+        removerItem(chave);
+        return;
+    }
+
+    const item = carrinho.find(i => i.chave === chave);
+    if (item) {
+        item.quantidade = novaQtd;
+        salvarCarrinho(carrinho);
+        renderizarCarrinho();
+    }
+}
+
+window.comprar = comprar;
+window.removerItem = removerItem;
+window.alterarQtd = alterarQtd;
+
+// ==========================================
+// 4. RENDERIZAÇÃO
+// ==========================================
+function renderizarCarrinho() {
+    const listaContainer = document.getElementById('lista-carrinho');
+    const totalContainer = document.querySelector('.total_info');
+
+    if (!listaContainer || !totalContainer) return;
+
+    const carrinho = lerCarrinho();
+
+    if (carrinho.length === 0) {
+        listaContainer.innerHTML = '<h2 style="color: white; padding: 20px;">Seu carrinho está vazio!</h2>';
+        totalContainer.innerHTML = `
+            <h1>Total: R$ 0,00</h1>
+            <h2><b>Quantidade de Itens: 0</b></h2>
+        `;
+        return;
+    }
+
+    listaContainer.innerHTML = '';
+    let subtotal = 0;
+    let totalItens = 0;
+
+    carrinho.forEach(item => {
+        const qtd = parseInt(item.quantidade) || 1;
+        const preco = parseFloat(item.preco) || 0;
+        
+        subtotal += preco * qtd;
+        totalItens += qtd;
+
+        listaContainer.innerHTML += `
+            <div class="mangas_carrinho" style="width: 100%;">
+                <div class="manga_img">
+                    <img src="${item.img}" alt="${item.nome}">
+                </div>
+                <div class="manga_info">
+                    <h2>${item.nome}</h2>
+                    <h2><b>Preço: R$ ${preco.toFixed(2)}</b></h2>
+                    <p>Autor: ${item.autor}</p>
+                    <div class="acoes">
+                        <input type="number" value="${qtd}" min="1" onchange="alterarQtd('${item.chave}', this.value)">
+                        <button class="btn-remove" onclick="removerItem('${item.chave}')">Remover</button>
+                    </div>
+                </div>
             </div>
         `;
     });
+
+    totalContainer.innerHTML = `
+        <h1>Total: R$ ${subtotal.toFixed(2)}</h1>
+        <h2><b>Quantidade de Itens: ${totalItens}</b></h2>
+    `;
 }
 
-// BUSCAR MANGÁS
-function pesquisa() {
-    const campoPesquisa = document.getElementById('campoPesquisa');
-    if (!campoPesquisa) return;
-
-    const termo = campoPesquisa.value.toLowerCase();
-    
-    const resultados = mangas.filter(m => 
-        m.nome.toLowerCase().includes(termo) || 
-        m.autor.toLowerCase().includes(termo)
-    );
-
-    mostrarMangas(resultados);
-}
-
-// COMPRAR
-function comprar(nomeManga) {
-    carrinho++;
-    
-    const contador = document.getElementById('carrinhoContador');
-    if (contador) {
-        contador.textContent = carrinho;
-    }
-
-    alert(`${nomeManga} adicionado ao carrinho!`);
-}
-
-// CONFIGURAR EVENTOS QUANDO A PÁGINA CARREGAR
-document.addEventListener('DOMContentLoaded', () => {
-    // Exibe a lista inicial
-    mostrarMangas();
-
-    // Evento no ícone do carrinho
-    const btnCart = document.querySelector('.btn-cart');
-    if (btnCart) {
-        btnCart.onclick = function(e) {
-            e.preventDefault();
-            if (carrinho === 0) {
-                alert('Carrinho vazio!');
-            } else {
-                alert(`Você tem ${carrinho} item(ns) no carrinho.`);
-            }
-        };
-    }
-
-    // Evento de buscar ao pressionar "Enter"
-    const campoPesquisa = document.getElementById('campoPesquisa');
-    if (campoPesquisa) {
-        campoPesquisa.onkeypress = function(e) {
-            if (e.key === 'Enter') pesquisa();
-        };
-    }
-});
+document.addEventListener('DOMContentLoaded', renderizarCarrinho);

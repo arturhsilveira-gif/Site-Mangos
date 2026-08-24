@@ -5,38 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manga mangás</title>
       <link rel="stylesheet" href="CSS/styles.css">
-      <script src="Js/Js.js"></script>
+      
 </head>
 <body>
-    
-    <header>
-    <a href="index.html" class="btn-home"><img src="IMG/home_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png"></a>
-    <h3><a href="todos.html">Todos os mangás</a></h3>
-    <h3><a href="novidades.html">Novidades</a></h3>
-      <a href="carrinho.html" class="btn-cart"><img src="IMG/shopping_cart_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png"></a> 
+   <body>
+  <header>
+        <a href="index.html" class="btn-home"><img src="IMG/home_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png"></a>
+        <h3><a href="todos.html">Todos os mangás</a></h3>
+        <h3><a href="novidades.html">Novidades</a></h3>
+        <a href="carrinho.html" class="btn-cart"><img src="IMG/shopping_cart_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png"></a> 
     </header>
 
     <div class="carrinho-container">
+        <!-- O JS vai desenhar os cards dos mangás AQUI DENTRO -->
+        <div id="lista-carrinho" style="flex: 1;"></div>
 
-     <div class="mangas_carrinho">
-      <div class="manga_img">
-      </div>
-
-      <div class="manga_info">
-        <h2>Nome do Mangá:</h2>
-        <h2><b>Preço: R$ 29,90</b></h2>
-        <p>Autor: Nome do Autor</p>
-      </div>
+        <!-- Painel lateral com o valor acumulado -->
+        <div class="total">
+            <div class="total_info">
+                <h1>Total: R$ 0,00</h1>
+                <h2><b>Quantidade de Itens: 0</b></h2>
+            </div>
+        </div>
     </div>
-
-    <div class="total">
-
-      <div class="total_info">
-        <h1>Total:</h1>
-        <h2><b>Quantidade de Itens:</b></h2>
-        <p>Produtos:</p>
-      </div>
-  </div>
-
+  <script async src="Index.Js"></script>
 </body>
 </html>
