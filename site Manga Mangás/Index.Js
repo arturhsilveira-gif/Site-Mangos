@@ -55,7 +55,12 @@ function lerCarrinho() {
 }
 
 function salvarCarrinho(carrinho) {
-    localStorage.setItem('meuCarrinhoManga', JSON.stringify(carrinho));
+    try {
+        localStorage.setItem('meuCarrinhoManga', JSON.stringify(carrinho));
+    } catch (e) {
+        alert("Não foi possível salvar o carrinho. Verifique se o navegador permite localStorage nesta página (isso costuma falhar se o site for aberto direto como arquivo, em vez de por um servidor local).");
+        console.error("Erro ao salvar carrinho:", e);
+    }
 }
 
 
@@ -125,7 +130,51 @@ window.removerItem = removerItem;
 window.alterarQtd = alterarQtd;
 
 // ==========================================
-// 4. RENDERIZAÇÃO
+// 4. RENDERIZAÇÃO DA LISTA DE PRODUTOS (index.html / novidades.html)
+// ==========================================
+function renderizarProdutos(containerId, chaves) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    if (chaves.length === 0) {
+        container.innerHTML = '<h2 style="color: white; padding: 20px;">Nenhum mangá encontrado.</h2>';
+        return;
+    }
+
+    container.innerHTML = chaves.map(chave => {
+        const item = CATALOGO[chave];
+        return `
+            <div class="mangas">
+                <div class="manga_img">
+                    <img src="${item.img}" alt="${item.nome}">
+                </div>
+                <div class="manga_info">
+                    <h2>${item.nome}</h2>
+                    <h2><b>Preço: R$ ${item.preco.toFixed(2).replace('.', ',')}</b></h2>
+                    <p>Autor: ${item.autor}</p>
+                    <button class="btn-add" onclick="comprar('${chave}')">Adicionar ao carrinho</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function pesquisa() {
+    const campo = document.getElementById('campoPesquisa');
+    if (!campo) return;
+
+    const termo = campo.value.toLowerCase().trim();
+    const chaves = Object.keys(CATALOGO).filter(chave => {
+        const item = CATALOGO[chave];
+        return item.nome.toLowerCase().includes(termo) || item.autor.toLowerCase().includes(termo);
+    });
+
+    renderizarProdutos('listaTodos', chaves);
+}
+window.pesquisa = pesquisa;
+
+// ==========================================
+// 5. RENDERIZAÇÃO DO CARRINHO (carrinho.html)
 // ==========================================
 function renderizarCarrinho() {
     const listaContainer = document.getElementById('lista-carrinho');
@@ -179,4 +228,16 @@ function renderizarCarrinho() {
     `;
 }
 
-document.addEventListener('DOMContentLoaded', renderizarCarrinho);
+document.addEventListener('DOMContentLoaded', () => {
+    renderizarCarrinho();
+
+    // Página "Todos os mangás" (todos.html)
+    if (document.getElementById('listaTodos')) {
+        renderizarProdutos('listaTodos', Object.keys(CATALOGO));
+    }
+
+    // Página de novidades (novidades.html)
+    if (document.getElementById('listaNovidades')) {
+        renderizarProdutos('listaNovidades', Object.keys(CATALOGO));
+    }
+});
