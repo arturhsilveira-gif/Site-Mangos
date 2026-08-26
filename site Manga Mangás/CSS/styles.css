@@ -8,7 +8,7 @@ header{
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 450px;
+    gap: 350px;
     padding: 10px 40px;
     background-color:  rgb(65, 61, 61);
 
@@ -294,3 +294,22 @@ header a:hover{
     color: rgb(190, 93, 1);
     transform: scale(1.05);
 }
+
+.destaques_text{
+    border: color solid  rgb(190, 93, 1);
+    border-radius: 20px;
+    background-color:  rgb(190, 93, 1);
+    width: 8%;
+    margin-left: 180px;
+}
+
+.rodape{
+    border: color solid  rgb(190, 93, 1);
+    border-radius: 20px;
+    background-color:  rgb(190, 93, 1); 
+    padding: 30px;
+    margin: 40px;
+    word-spacing: 10px;
+    text-align: center;
+}
+

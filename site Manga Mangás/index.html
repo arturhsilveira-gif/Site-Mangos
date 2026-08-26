@@ -9,6 +9,7 @@
 </head>
 <body>
     <header>
+    <img src="IMG/logo.png" alt="">
     <a href="index.html" class="btn-home"><img src="IMG/home_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png"></a>
     <h3><a href="todos.html">Todos os mangás</a></h3>
     <h3><a href="novidades.html">Novidades</a></h3>
@@ -21,14 +22,39 @@
 
        <div id="listaMangas" class="lista-mangas"></div>
 
+    <div class="destaques_text"><h1>Destaques:</h1></div>
+
     <div class="destaques">
-        <div class="destaque1">
-            <h1>destaque 1</h1>
-        </div>
-        <div class="destaque2">
-            <h1>destaque 2</h1>
-        </div>
+        <div class="mangas">
+      <div class="manga_img"> <img src="IMG/WhatsApp Image 2026-08-21 at 11.29.01.png" alt="Blue Lock">
+      </div>
+
+      <div class="manga_info">
+        <h2>Blue Lock Vol: 36</h2>
+        <h2><b>Preço: R$ 29,90</b></h2>
+        <p>Autor: Muneyuki Kaneshiro</p>
+        <button class="btn-add" onclick="comprar('Blue Lock')">Adicionar ao carrinho</button>
+      </div>
     </div>
+
+     <div class="mangas">
+      <div class="manga_img"> <img src="IMG/WhatsApp Image 2026-08-21 at 11.28.52.png" alt="Chainsaw Man">
+      </div>
+
+      <div class="manga_info">
+        <h2>Chainsaw Man Vol: 23</h2>
+        <h2><b>Preço: R$ 29,90</b></h2>
+        <p>Autor:  Tatsuki Fujimoto</p>
+        <button class="btn-add" onclick="comprar('Chainsaw Man')">Adicionar ao carrinho</button>
+      </div>
+    </div>
+    </div>
+
+    <footer>
+        <div class="rodape">
+       <div> <p>© 2026 Manga Mangás Todos os direitos reservados. |  CNPJ: 48.392.715/0001-20 |  Contato: (48) 98765-4321 |  mangamangas@gmail.com</p>
+        </div>
+    </footer>
 
     <script async src="Index.Js"></script>
     </body>
